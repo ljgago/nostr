@@ -118,8 +118,8 @@ pub fn nip01_generate_event_id(event: NifEvent) -> Result<String, String> {
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
-pub fn nip01_sign_message(secret_key: &str, message: &str) -> Result<String, String> {
-    sign_message(secret_key, message)
+pub fn nip01_sign_message(message: &str, secret_key: &str) -> Result<String, String> {
+    sign_message(message, secret_key)
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
@@ -139,7 +139,7 @@ pub fn nip01_serialize_event(event: NifEvent) -> Result<String, String> {
 #[rustler::nif(schedule = "DirtyCpu")]
 pub fn nip01_sign_event(event: NifEvent, secret_key: &str) -> Result<NifEvent, String> {
     match event_serialize(&event) {
-        Ok(event_serialized) => match sign_message(secret_key, &event_serialized) {
+        Ok(event_serialized) => match sign_message(&event_serialized, secret_key) {
             Ok(sig) => {
                 let id = Message::from_hashed_data::<sha256::Hash>(&event_serialized.as_bytes())
                     .to_string();

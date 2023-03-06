@@ -21,4 +21,9 @@ defmodule Nostr.EventTest do
     changed_event = struct(@event, content: "Hello", kind: 3)
     assert Event.verify(changed_event) == {:ok, false}
   end
+
+  test "sign the event" do
+    {ok, _event} = Event.sign(@event, "3bf0c63fcb93463407af97a5e5ee64fa883d107ef9e558472c4eb9aaaefa459d")
+    assert ok == :ok
+  end
 end
