@@ -17,7 +17,7 @@ defmodule Nostr.SecretKey do
 
   """
   @impl true
-  @spec get_public_key(seckey :: String.t()) :: {:ok, String.t()} | {:error, String.t()}
+  @spec get_public_key(String.t()) :: {:ok, String.t()} | {:error, String.t()}
   def get_public_key(seckey) do
     Native.nip01_generate_public_key(seckey)
   end
@@ -32,7 +32,7 @@ defmodule Nostr.SecretKey do
 
   """
   @impl true
-  @spec encode(seckey :: String.t()) :: {:ok, String.t()} | {:error, String.t()}
+  @spec encode(String.t()) :: {:ok, String.t()} | {:error, String.t()}
   def encode(seckey) do
     Native.nip19_encode(seckey, "nsec")
   end
@@ -49,7 +49,7 @@ defmodule Nostr.SecretKey do
 
   """
   @impl true
-  @spec encode!(seckey :: String.t()) :: String.t()
+  @spec encode!(String.t()) :: String.t()
   def encode!(seckey) do
     case encode(seckey) do
       {:ok, nsec} -> nsec
@@ -67,7 +67,7 @@ defmodule Nostr.SecretKey do
 
   """
   @impl true
-  @spec decode(nsec :: String.t()) :: {:ok, String.t()} | {:error, String.t()}
+  @spec decode(String.t()) :: {:ok, String.t()} | {:error, String.t()}
   def decode(nsec) do
     case Nostr.Native.nip19_decode(nsec) do
       {:ok, %{data: seckey, prefix: "nsec"}} -> {:ok, seckey}
@@ -88,7 +88,7 @@ defmodule Nostr.SecretKey do
 
   """
   @impl true
-  @spec decode!(nsec :: String.t()) :: String.t()
+  @spec decode!(String.t()) :: String.t()
   def decode!(nsec) do
     case decode(nsec) do
       {:ok, seckey} -> seckey

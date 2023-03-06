@@ -76,7 +76,7 @@ defmodule Nostr.Event do
 
   """
   @impl true
-  @spec new(fields :: Enumerable.t()) :: Event.t()
+  @spec new(keyword()) :: Event.t()
   def new(fields) do
     struct(Event, fields)
   end
@@ -85,7 +85,7 @@ defmodule Nostr.Event do
   doc
   """
   @impl true
-  @spec replace(event :: Event.t(), fields :: Enumerable.t()) :: Event.t()
+  @spec replace(Event.t(), keyword()) :: Event.t()
   def replace(event, fields \\ []) do
     struct(event, fields)
   end
@@ -122,7 +122,7 @@ defmodule Nostr.Event do
 
   """
   @impl true
-  @spec sign(event :: Event.t(), seckey :: String.t()) :: {:ok, Event.t()} | {:error, String.t()}
+  @spec sign(Event.t(), String.t()) :: {:ok, Event.t()} | {:error, String.t()}
   def sign(event, seckey) do
     Native.nip01_sign_event(event, seckey)
   end
@@ -158,7 +158,7 @@ defmodule Nostr.Event do
 
   """
   @impl true
-  @spec sign!(event :: Event.t(), seckey :: String.t()) :: Event.t()
+  @spec sign!(Event.t(), String.t()) :: Event.t()
   def sign!(event, seckey) do
     case sign(event, seckey) do
       {:ok, signed_event} -> signed_event
@@ -187,7 +187,7 @@ defmodule Nostr.Event do
 
   """
   @impl true
-  @spec verify(event :: Event.t()) :: {:ok, boolean()} | {:error, String.t()}
+  @spec verify(Event.t()) :: {:ok, boolean()} | {:error, String.t()}
   def verify(event) do
     Native.nip01_verify_event(event)
   end
@@ -213,7 +213,7 @@ defmodule Nostr.Event do
 
   """
   @impl true
-  @spec verify!(event :: Event.t()) :: boolean()
+  @spec verify!(Event.t()) :: boolean()
   def verify!(event) do
     case verify(event) do
       {:ok, is_ok} -> is_ok
@@ -242,7 +242,7 @@ defmodule Nostr.Event do
 
   """
   @impl true
-  @spec serialize(event :: Event.t()) :: String.t()
+  @spec serialize(Event.t()) :: String.t()
   def serialize(%Event{
         pubkey: pubkey,
         created_at: created_at,
@@ -273,7 +273,7 @@ defmodule Nostr.Event do
 
   """
   @impl true
-  @spec generate_id(event :: Event.t()) :: {:ok, String.t()} | {:error, String.t()}
+  @spec generate_id(Event.t()) :: {:ok, String.t()} | {:error, String.t()}
   def generate_id(event) do
     Native.nip01_generate_event_id(event)
   end
@@ -297,7 +297,7 @@ defmodule Nostr.Event do
 
   """
   @impl true
-  @spec generate_id!(event :: Event.t()) :: String.t()
+  @spec generate_id!(Event.t()) :: String.t()
   def generate_id!(event) do
     case generate_id(event) do
       {:ok, id} -> id
@@ -310,7 +310,7 @@ defmodule Nostr.Event do
 
   """
   @impl true
-  @spec to_json(event :: Event.t()) :: String.t()
+  @spec to_json(Event.t()) :: String.t()
   def to_json(event) do
     event
     |> Jason.encode!()
@@ -320,7 +320,7 @@ defmodule Nostr.Event do
 
   """
   @impl true
-  @spec from_json(event_json :: String.t()) :: t
+  @spec from_json(String.t()) :: Event.t()
   def from_json(event_json) do
     event = Jason.decode!(event_json)
 

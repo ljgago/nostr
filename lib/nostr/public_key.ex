@@ -17,7 +17,7 @@ defmodule Nostr.PublicKey do
 
   """
   @impl true
-  @spec from_secret_key(seckey :: String.t()) :: {:ok, String.t()} | {:error, String.t()}
+  @spec from_secret_key(String.t()) :: {:ok, String.t()} | {:error, String.t()}
   def from_secret_key(seckey) do
     Native.nip01_generate_public_key(seckey)
   end
@@ -32,7 +32,7 @@ defmodule Nostr.PublicKey do
 
   """
   @impl true
-  @spec encode(pubkey :: String.t()) :: {:ok, String.t()} | {:error, String.t()}
+  @spec encode(String.t()) :: {:ok, String.t()} | {:error, String.t()}
   def encode(pubkey) do
     Native.nip19_encode(pubkey, "npub")
   end
@@ -49,7 +49,7 @@ defmodule Nostr.PublicKey do
 
   """
   @impl true
-  @spec encode!(pubkey :: String.t()) :: String.t()
+  @spec encode!(String.t()) :: String.t()
   def encode!(pubkey) do
     case encode(pubkey) do
       {:ok, npub} -> npub
@@ -67,7 +67,7 @@ defmodule Nostr.PublicKey do
 
   """
   @impl true
-  @spec decode(npub :: String.t()) :: {:ok, String.t()} | {:error, String.t()}
+  @spec decode(String.t()) :: {:ok, String.t()} | {:error, String.t()}
   def decode(npub) do
     case Nostr.Native.nip19_decode(npub) do
       {:ok, %{data: pubkey, prefix: "npub"}} -> {:ok, pubkey}
@@ -88,7 +88,7 @@ defmodule Nostr.PublicKey do
 
   """
   @impl true
-  @spec decode!(npub :: String.t()) :: String.t()
+  @spec decode!(String.t()) :: String.t()
   def decode!(npub) do
     case decode(npub) do
       {:ok, pubkey} -> pubkey

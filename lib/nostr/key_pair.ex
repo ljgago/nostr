@@ -39,7 +39,7 @@ defmodule Nostr.KeyPair do
 
   """
   @impl true
-  @spec from_secret_key(seckey :: String.t()) :: {:ok, map()} | {:error, String.t()}
+  @spec from_secret_key(String.t()) :: {:ok, map()} | {:error, String.t()}
   def from_secret_key(seckey) do
     case Native.nip01_generate_public_key(seckey) do
       {:ok, pubkey} ->
@@ -72,7 +72,7 @@ defmodule Nostr.KeyPair do
 
   """
   @impl true
-  @spec encode(key_pair :: map()) :: {:ok, map()} | {:error, String.t()}
+  @spec encode(map()) :: {:ok, map()} | {:error, String.t()}
   def encode(%{pubkey: pubkey, seckey: seckey}) do
     with {:ok, npub} <- Native.nip19_encode(pubkey, "npub"),
          {:ok, nsec} <- Native.nip19_encode(seckey, "nsec") do
@@ -107,7 +107,7 @@ defmodule Nostr.KeyPair do
 
   """
   @impl true
-  @spec encode!(key_pair :: map()) :: map()
+  @spec encode!(map()) :: map()
   def encode!(key_pair) do
     case encode(key_pair) do
       {:ok, output} -> output
@@ -133,7 +133,7 @@ defmodule Nostr.KeyPair do
 
   """
   @impl true
-  @spec decode(key_pair :: map()) :: {:ok, map()} | {:error, String.t()}
+  @spec decode(map()) :: {:ok, map()} | {:error, String.t()}
   def decode(%{npub: npub, nsec: nsec}) do
     with {:ok, %{data: pubkey}} <- Native.nip19_decode(npub),
          {:ok, %{data: seckey}} <- Native.nip19_decode(nsec) do
@@ -168,7 +168,7 @@ defmodule Nostr.KeyPair do
 
   """
   @impl true
-  @spec decode!(key_pair :: map()) :: map()
+  @spec decode!(map()) :: map()
   def decode!(key_pair) do
     case decode(key_pair) do
       {:ok, output} -> output

@@ -8,8 +8,8 @@ defmodule Nostr.Adapter.Event do
   # Event
 
   @callback new() :: t
-  @callback new(fields :: Enumerable.t()) :: t
-  @callback replace(t, Enumerable.t()) :: t
+  @callback new(fields :: keyword()) :: t
+  @callback replace(t, keyword()) :: t
   @callback serialize(t) :: String.t()
   @callback generate_id(t) :: {:ok, String.t()} | {:error, String.t()}
   @callback generate_id!(t) :: String.t()

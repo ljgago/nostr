@@ -17,7 +17,7 @@ defmodule Nostr.Metadata do
 
   """
   @impl true
-  @spec encode_note(event_id :: String.t()) :: {:ok, String.t()} | {:error, String.t()}
+  @spec encode_note(String.t()) :: {:ok, String.t()} | {:error, String.t()}
   def encode_note(event_id) do
     Native.nip19_encode(event_id, "note")
   end
@@ -32,7 +32,7 @@ defmodule Nostr.Metadata do
 
   """
   @impl true
-  @spec decode_note(note :: String.t()) :: {:ok, String.t()} | {:error, String.t()}
+  @spec decode_note(String.t()) :: {:ok, String.t()} | {:error, String.t()}
   def decode_note(note) do
     case Native.nip19_decode(note) do
       {:ok, %{data: event_id, prefix: "note"}} -> {:ok, event_id}
@@ -45,8 +45,7 @@ defmodule Nostr.Metadata do
 
   """
   @impl true
-  @spec encode_event(event_id :: String.t(), relays :: [String.t()]) ::
-          {:ok, String.t()} | {:error, String.t()}
+  @spec encode_event(String.t(), [String.t()]) :: {:ok, String.t()} | {:error, String.t()}
   def encode_event(event_id, relays) do
     Native.nip19_encode_tlv(event_id, relays, "nevent")
   end
@@ -55,7 +54,7 @@ defmodule Nostr.Metadata do
 
   """
   @impl true
-  @spec decode_event(nevent :: String.t()) :: {:ok, map()} | {:error, String.t()}
+  @spec decode_event(String.t()) :: {:ok, map()} | {:error, String.t()}
   def decode_event(nevent) do
     Native.nip19_decode_tlv(nevent)
   end
@@ -64,8 +63,7 @@ defmodule Nostr.Metadata do
 
   """
   @impl true
-  @spec encode_profile(public_key :: String.t(), relays :: [String.t()]) ::
-          {:ok, String.t()} | {:error, String.t()}
+  @spec encode_profile(String.t(), [String.t()]) :: {:ok, String.t()} | {:error, String.t()}
   def encode_profile(public_key, relays) do
     Native.nip19_encode_tlv(public_key, relays, "nprofile")
   end
@@ -74,7 +72,7 @@ defmodule Nostr.Metadata do
 
   """
   @impl true
-  @spec decode_profile(nprofile :: String.t()) :: {:ok, map()} | {:error, String.t()}
+  @spec decode_profile(String.t()) :: {:ok, map()} | {:error, String.t()}
   def decode_profile(nprofile) do
     case Native.nip19_decode_tlv(nprofile) do
       {:ok, profile} ->
